@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Little Light, Always — A Diwali Story by Payal</title>
+  <meta name="description" content="An interactive, scroll-controlled cinematic Diwali short film following a Gujarati Indian family through the five days of Diwali by Payal.">
+  <meta name="theme-color" content="#410F20">
+
+  <!-- OpenGraph / Social Metadata -->
+  <meta property="og:title" content="A Little Light, Always — A Diwali Story by Payal">
+  <meta property="og:description" content="A continuous cinematic Diwali storytelling experience through five days of abundance, renewal, celebration, new beginnings, and family love.">
+  <meta property="og:type" content="website">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Three.js (Local offline copy with CDN fallback) -->
+  <script src="three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\\/script>');
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Film Grain & Vignette Overlays -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- 3D WebGL Canvas Layer -->
+  <div id="webgl-container" aria-label="3D Interactive Diwali Scene"></div>
+
+  <!-- Story-Driven Transition Wipes -->
+  <div class="transition-curtain ribbon-wipe-overlay" aria-hidden="true"></div>
+  <div class="transition-curtain sunlight-flood-overlay" aria-hidden="true"></div>
+  <div class="transition-curtain box-sweep-overlay" aria-hidden="true"></div>
+
+  <!-- Site Header -->
+  <header class="site-header" role="banner">
+    <div class="brand-mark">
+      <h1 class="brand-title">A Little Light, Always</h1>
+      <span class="brand-sub">A Diwali Story by Payal</span>
+    </div>
+
+    <div class="header-controls">
+      <!-- Ambient Audio Toggle -->
+      <button id="sound-toggle" class="control-btn" aria-label="Toggle ambient sound">
+        <span class="sound-waves" aria-hidden="true">
+          <span class="sound-bar"></span>
+          <span class="sound-bar"></span>
+          <span class="sound-bar"></span>
+        </span>
+        <span class="btn-label">Sound Off</span>
+      </button>
+
+      <!-- Reduced Motion Toggle -->
+      <button id="motion-toggle" class="control-btn" aria-label="Toggle motion setting">
+        <span class="btn-label">Motion: On</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Floating Day & Time Badge (Bottom Left) -->
+  <aside class="day-badge" aria-live="polite">
+    <div class="day-badge-number" aria-hidden="true">1</div>
+    <div class="day-badge-info">
+      <span class="day-badge-title">Dhanteras</span>
+      <span class="day-badge-time">Warm Afternoon</span>
+    </div>
+  </aside>
+
+  <!-- 5-Day Chapter Navigation Bar (Bottom Center) -->
+  <nav class="chapter-nav" aria-label="Festival Days Navigation">
+    <button class="chapter-dot active" data-chapter="0" aria-label="Prologue">
+      <span class="chapter-num">0</span>
+      <span class="chapter-name">Prologue</span>
+    </button>
+    <button class="chapter-dot" data-chapter="1" aria-label="Day 1: Dhanteras">
+      <span class="chapter-num">1</span>
+      <span class="chapter-name">Dhanteras</span>
+    </button>
+    <button class="chapter-dot" data-chapter="2" aria-label="Day 2: Kali Chaudas">
+      <span class="chapter-num">2</span>
+      <span class="chapter-name">Kali Chaudas</span>
+    </button>
+    <button class="chapter-dot" data-chapter="3" aria-label="Day 3: Diwali">
+      <span class="chapter-num">3</span>
+      <span class="chapter-name">Diwali</span>
+    </button>
+    <button class="chapter-dot" data-chapter="4" aria-label="Day 4: Bestu Varas">
+      <span class="chapter-num">4</span>
+      <span class="chapter-name">Bestu Varas</span>
+    </button>
+    <button class="chapter-dot" data-chapter="5" aria-label="Day 5: Bhai Bij">
+      <span class="chapter-num">5</span>
+      <span class="chapter-name">Bhai Bij</span>
+    </button>
+  </nav>
+
+  <!-- Master Cinematic Film Stage (Pinned Viewport) -->
+  <div class="film-stage">
+    
+    <!-- 0. Prologue Screen -->
+    <section class="scene-layer is-active" id="layer-prologue" aria-label="Opening Prologue">
+      <div class="prologue-content">
+        <span class="prologue-eyebrow">A Continuous Five-Day Journey</span>
+        <h2 class="prologue-title">A Little Light, <em>Always</em></h2>
+        <p class="prologue-desc">
+          An interactive cinematic narrative following an Indian family through five days of gratitude, renewal, and togetherness across the Gujarati Diwali festival.
+        </p>
+        <div class="scroll-indicator" aria-hidden="true">
+          <div class="scroll-pill">
+            <div class="scroll-wheel"></div>
+          </div>
+          <span class="scroll-text">Scroll to Begin</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Chapter 1: Dhanteras -->
+    <section class="scene-layer" id="layer-dhanteras" aria-label="Chapter 1: Dhanteras">
+      <div class="chapter-content align-left">
+        <div class="chapter-tagline">DHANTERAS — THE FIRST GIFT</div>
+        <h2 class="chapter-heading">The First Gift</h2>
+        <p class="chapter-quote">
+          “May abundance find its way into your home, and happiness into the <strong>smallest moments</strong>.”
+        </p>
+        <button id="open-gift-btn" class="scene-interaction-cue">
+          <span>✦ Unwrap the Blessing</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. Chapter 2: Kali Chaudas -->
+    <section class="scene-layer" id="layer-kali-chaudas" aria-label="Chapter 2: Kali Chaudas">
+      <div class="chapter-content align-right">
+        <div class="chapter-tagline">KALI CHAUDAS — A FRESH BEGINNING</div>
+        <h2 class="chapter-heading">A Fresh Beginning</h2>
+        <p class="chapter-quote">
+          “May you release what weighs you down and <strong>welcome what helps you grow</strong>.”
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. Chapter 3: Diwali (Climax) -->
+    <section class="scene-layer" id="layer-diwali" aria-label="Chapter 3: Diwali">
+      <div class="chapter-content align-center diwali-grand-hero">
+        <div class="diwali-ornament" aria-hidden="true">✦ ✦ ✦</div>
+        <div class="diwali-title-mask">
+          <h2 class="diwali-grand-title">Happy Diwali</h2>
+        </div>
+        <div class="chapter-tagline">DIWALI — THE HOUSE COMES ALIVE</div>
+        <p class="diwali-subtitle">
+          “May your life be rich in love, your home in laughter, and your future in possibility.”
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. Chapter 4: Bestu Varas -->
+    <section class="scene-layer" id="layer-bestu-varas" aria-label="Chapter 4: Bestu Varas">
+      <div class="chapter-content align-left">
+        <span class="saal-mubarak-pill">Saal Mubarak!</span>
+        <div class="chapter-tagline">BESTU VARAS — DOORS TO TOMORROW</div>
+        <h2 class="chapter-heading">Doors to Tomorrow</h2>
+        <p class="chapter-quote">
+          “A new year. A fresh perspective. <strong>A thousand possibilities.</strong>”
+        </p>
+      </div>
+    </section>
+
+    <!-- 5. Chapter 5: Bhai Bij & Final Greeting -->
+    <section class="scene-layer" id="layer-bhai-bij" aria-label="Chapter 5: Bhai Bij and Final Message">
+      <div class="final-greeting-card">
+        <div class="chapter-tagline" style="justify-content: center;">BHAI BIJ — WHAT MATTERS MOST</div>
+        <p class="chapter-quote" style="margin-bottom: 1rem; font-size: 1.15rem;">
+          “Wherever life takes you, may you always find your way back to the people who feel like home.”
+        </p>
+
+        <div class="card-flourish" aria-hidden="true"></div>
+
+        <h2 class="final-title">A Little Light, Always.</h2>
+        <p class="final-message">
+          Wishing you and your loved ones a beautiful Diwali and a wonderful year ahead filled with peace, prosperity, and laughter.
+        </p>
+
+        <div class="signature-block">
+          <div class="signature-label">With warmth,</div>
+          <div class="signature-script">Payal</div>
+        </div>
+
+        <div class="action-buttons">
+          <button id="share-btn" class="btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            <span>Share this wish</span>
+          </button>
+          <button id="replay-btn" class="btn-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            <span>Replay the story</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Scroll Height Track for Master Scroll Scrubbing -->
+  <main class="story-scroll-container" aria-hidden="true"></main>
+
+  <!-- Dhanteras Interactive Gift Modal -->
+  <div id="gift-modal" class="gift-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="gift-modal-title">
+    <div class="gift-modal-card">
+      <button id="close-gift-modal" class="modal-close-btn" aria-label="Close gift message">&times;</button>
+      <div class="gift-modal-icon" aria-hidden="true">✦</div>
+      <h3 id="gift-modal-title" class="gift-modal-title">A Dhanteras Blessing</h3>
+      <p class="gift-modal-body">
+        “May this box carry not just silver and sweets, but an abundance of calm mornings, cherished conversations, and warm light that never fades.”
+      </p>
+      <div class="signature-script" style="font-size: 2.6rem;">Payal</div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast-notice" class="toast-notice" role="status" aria-live="polite"></div>
+
+  <!-- Application Logic -->
+  <script src="audio.js"></script>
+  <script src="scene3d.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

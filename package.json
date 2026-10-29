@@ -1,0 +1,12 @@
+{
+  "name": "a-little-light-always-diwali",
+  "version": "1.0.0",
+  "description": "A Little Light, Always — A Diwali Story by Payal",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": ["diwali", "cinematic", "threejs", "gsap", "interactive-story"],
+  "author": "Payal",
+  "license": "MIT"
+}
