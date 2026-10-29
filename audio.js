@@ -181,6 +181,51 @@ class DiwaliAudioEngine {
   }
 
   /**
+   * Festive Phatakas / Sparkler (Phooljhadi & Anar) Sizzle Crackle
+   */
+  playSparklerSizzle() {
+    if (!this.ctx || this.isMuted) return;
+    const now = this.ctx.currentTime;
+    
+    // Quick burst of crackling noise
+    const bufferSize = this.ctx.sampleRate * 0.4;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * (Math.random() > 0.85 ? 0.8 : 0.08);
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(1800, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+
+    noise.start(now);
+  }
+
+  /**
+   * Sacred Laxmi Puja Hand Bell (Ghanti) Aarti Sequence
+   */
+  playPujaAartiBell() {
+    if (!this.ctx || this.isMuted) return;
+    // Rhythmic 3-ring puja bell sequence
+    [0, 0.18, 0.38].forEach((offset, idx) => {
+      setTimeout(() => {
+        this.playTempleBell(880 + idx * 80);
+      }, offset * 1000);
+    });
+  }
+
+  /**
    * Sitar String Pluck resonance
    */
   playSitarStrum(noteFreq = 330) {

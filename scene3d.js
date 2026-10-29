@@ -39,6 +39,15 @@ class DiwaliCinematicWorld {
     this.aartiThali = null;
     this.verandahColumns = [];
 
+    // Diwali Laxmi Puja & Phatakas (Fireworks & Sparklers)
+    this.pujaAltar = null;
+    this.incenseParticles = null;
+    this.anarParticles = null;
+    this.chakriGroup = null;
+    this.chakriParticles = null;
+    this.sparklerParticles = null;
+    this.skyFireworks = null;
+
     // Lighting rig
     this.dirSunLight = null;
     this.ambientLight = null;
@@ -86,6 +95,8 @@ class DiwaliCinematicWorld {
     this.buildDiwaliUrliAndDiyas();
     this.buildBestuVarasCourtyard();
     this.buildBhaiBijVerandah();
+    this.buildLaxmiPujaAltar();
+    this.buildCourtyardFireworksAndSparklers();
     this.createAtmosphericParticles();
 
     // 6. Event Listeners
@@ -451,6 +462,284 @@ class DiwaliCinematicWorld {
     this.scene.add(this.passingBox);
   }
 
+  buildLaxmiPujaAltar() {
+    this.pujaAltar = new THREE.Group();
+
+    // 1. Red Silk & Velvet Chowki (Altar Platform)
+    const chowkiGeo = new THREE.BoxGeometry(1.8, 0.28, 1.0);
+    const chowkiMat = new THREE.MeshStandardMaterial({
+      color: 0x8A1C2E, // Auspicious Sindoor Red
+      roughness: 0.6,
+      metalness: 0.1
+    });
+    const chowki = new THREE.Mesh(chowkiGeo, chowkiMat);
+    chowki.position.y = 0.14;
+    chowki.receiveShadow = true;
+    chowki.castShadow = true;
+    this.pujaAltar.add(chowki);
+
+    // Gold borders along the chowki cloth
+    const borderGeo = new THREE.BoxGeometry(1.82, 0.04, 1.02);
+    const border = new THREE.Mesh(borderGeo, this.matChampagneGold);
+    border.position.y = 0.27;
+    this.pujaAltar.add(border);
+
+    // 2. Golden Murtis of Goddess Lakshmi and Lord Ganesha
+    const idolGeo = new THREE.ConeGeometry(0.16, 0.42, 16);
+    const crownGeo = new THREE.ConeGeometry(0.06, 0.12, 8);
+    const haloGeo = new THREE.RingGeometry(0.08, 0.22, 24);
+    const haloMat = new THREE.MeshBasicMaterial({
+      color: 0xFFD700,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.85
+    });
+
+    // Lakshmi Murti (center left)
+    const lakshmiGroup = new THREE.Group();
+    const lakshmi = new THREE.Mesh(idolGeo, this.matChampagneGold);
+    lakshmi.position.set(-0.28, 0.48, 0);
+    lakshmi.castShadow = true;
+    lakshmiGroup.add(lakshmi);
+
+    const crownL = new THREE.Mesh(crownGeo, this.matChampagneGold);
+    crownL.position.set(-0.28, 0.74, 0);
+    lakshmiGroup.add(crownL);
+
+    const haloL = new THREE.Mesh(haloGeo, haloMat);
+    haloL.position.set(-0.28, 0.68, -0.02);
+    lakshmiGroup.add(haloL);
+    this.pujaAltar.add(lakshmiGroup);
+
+    // Ganesha Murti (center right)
+    const ganeshaGroup = new THREE.Group();
+    const ganesha = new THREE.Mesh(idolGeo, this.matChampagneGold);
+    ganesha.position.set(0.28, 0.48, 0);
+    ganesha.castShadow = true;
+    ganeshaGroup.add(ganesha);
+
+    const crownG = new THREE.Mesh(crownGeo, this.matChampagneGold);
+    crownG.position.set(0.28, 0.74, 0);
+    ganeshaGroup.add(crownG);
+
+    const haloG = new THREE.Mesh(haloGeo, haloMat);
+    haloG.position.set(0.28, 0.68, -0.02);
+    ganeshaGroup.add(haloG);
+    this.pujaAltar.add(ganeshaGroup);
+
+    // 3. Gujarati Chopda Pujan (Auspicious Ledger Books bound in Red Cloth)
+    const chopdaGeo = new THREE.BoxGeometry(0.42, 0.08, 0.32);
+    const matChopda = new THREE.MeshStandardMaterial({
+      color: 0x991B1B,
+      roughness: 0.5,
+      metalness: 0.1
+    });
+    const chopda1 = new THREE.Mesh(chopdaGeo, matChopda);
+    chopda1.position.set(-0.55, 0.32, 0.22);
+    chopda1.rotation.y = 0.15;
+    this.pujaAltar.add(chopda1);
+
+    const chopda2 = new THREE.Mesh(chopdaGeo, matChopda);
+    chopda2.position.set(-0.55, 0.40, 0.22);
+    chopda2.rotation.y = 0.05;
+    this.pujaAltar.add(chopda2);
+
+    // 4. Silver Thali with Fresh Sweets (Laddus)
+    const thaliGeo = new THREE.CylinderGeometry(0.22, 0.2, 0.02, 24);
+    const silverThali = new THREE.Mesh(thaliGeo, new THREE.MeshStandardMaterial({ color: 0xE2E8F0, metalness: 0.95, roughness: 0.15 }));
+    silverThali.position.set(0.55, 0.29, 0.22);
+    this.pujaAltar.add(silverThali);
+
+    const ladduGeo = new THREE.SphereGeometry(0.035, 8, 8);
+    const matLaddu = new THREE.MeshStandardMaterial({ color: 0xF59E0B, roughness: 0.7 });
+    for (let s = 0; s < 5; s++) {
+      const angle = (s / 5) * Math.PI * 2;
+      const laddu = new THREE.Mesh(ladduGeo, matLaddu);
+      laddu.position.set(0.55 + Math.cos(angle) * 0.07, 0.33, 0.22 + Math.sin(angle) * 0.07);
+      this.pujaAltar.add(laddu);
+    }
+    const topLaddu = new THREE.Mesh(ladduGeo, matLaddu);
+    topLaddu.position.set(0.55, 0.38, 0.22);
+    this.pujaAltar.add(topLaddu);
+
+    // 5. Sacred Akhand Diya (Large central ghee lamp)
+    const akhandDiya = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.05, 0.12, 16), this.matBrass);
+    akhandDiya.position.set(0, 0.34, 0.3);
+    this.pujaAltar.add(akhandDiya);
+    this.createFlame(this.pujaAltar, new THREE.Vector3(0, 0.44, 0.3));
+
+    // Warm dedicated light from puja diya
+    const pujaGlow = new THREE.PointLight(0xFFAA33, 2.0, 4.5);
+    pujaGlow.position.set(0, 0.6, 0.3);
+    this.pujaAltar.add(pujaGlow);
+
+    // 6. Agarbatti (Incense Sticks) & Curling Smoke Particles
+    const stickGeo = new THREE.CylinderGeometry(0.005, 0.005, 0.18);
+    const stickMat = new THREE.MeshBasicMaterial({ color: 0x332211 });
+    [-0.04, 0.04].forEach(x => {
+      const stick = new THREE.Mesh(stickGeo, stickMat);
+      stick.rotation.z = x * 3;
+      stick.position.set(0.18 + x, 0.36, 0.15);
+      this.pujaAltar.add(stick);
+
+      const tip = new THREE.Mesh(new THREE.SphereGeometry(0.008), new THREE.MeshBasicMaterial({ color: 0xFF4500 }));
+      tip.position.set(0.18 + x * 2, 0.45, 0.15);
+      this.pujaAltar.add(tip);
+    });
+
+    const smokeCount = 75;
+    const smokeGeo = new THREE.BufferGeometry();
+    const smokePos = new Float32Array(smokeCount * 3);
+    for (let i = 0; i < smokeCount; i++) {
+      smokePos[i * 3 + 0] = 0.18 + (Math.random() - 0.5) * 0.08;
+      smokePos[i * 3 + 1] = 0.45 + Math.random() * 0.9;
+      smokePos[i * 3 + 2] = 0.15 + (Math.random() - 0.5) * 0.08;
+    }
+    smokeGeo.setAttribute('position', new THREE.BufferAttribute(smokePos, 3));
+    this.incenseParticles = new THREE.Points(smokeGeo, new THREE.PointsMaterial({
+      size: 0.05,
+      color: 0xCBD5E1,
+      transparent: true,
+      opacity: 0.35
+    }));
+    this.pujaAltar.add(this.incenseParticles);
+
+    // Place the Puja Altar in the Diwali gathering hall
+    this.pujaAltar.position.set(0, 0, -8.0);
+    this.scene.add(this.pujaAltar);
+  }
+
+  buildCourtyardFireworksAndSparklers() {
+    // 1. Anar (Kothi / Flowerpot) in Courtyard
+    const anarCone = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.24, 16), this.matClay);
+    anarCone.position.set(-1.8, 0.12, -14.2);
+    this.scene.add(anarCone);
+
+    // Anar Showering Spark Particles
+    const anarCount = 450;
+    const anarGeo = new THREE.BufferGeometry();
+    const anarPos = new Float32Array(anarCount * 3);
+    const anarColors = new Float32Array(anarCount * 3);
+    this.anarVelocities = [];
+
+    const colBrightGold = new THREE.Color(0xFFEAA7);
+    const colBrightOrange = new THREE.Color(0xFF7675);
+    const colBrightWhite = new THREE.Color(0xFFFFFF);
+
+    for (let i = 0; i < anarCount; i++) {
+      anarPos[i * 3 + 0] = -1.8;
+      anarPos[i * 3 + 1] = 0.24;
+      anarPos[i * 3 + 2] = -14.2;
+
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 0.05 + 0.015;
+      this.anarVelocities.push({
+        vx: Math.cos(angle) * speed,
+        vy: Math.random() * 0.11 + 0.07,
+        vz: Math.sin(angle) * speed,
+        life: Math.random()
+      });
+
+      const c = i % 3 === 0 ? colBrightWhite : (i % 2 === 0 ? colBrightGold : colBrightOrange);
+      anarColors[i * 3 + 0] = c.r;
+      anarColors[i * 3 + 1] = c.g;
+      anarColors[i * 3 + 2] = c.b;
+    }
+    anarGeo.setAttribute('position', new THREE.BufferAttribute(anarPos, 3));
+    anarGeo.setAttribute('color', new THREE.BufferAttribute(anarColors, 3));
+
+    this.anarParticles = new THREE.Points(anarGeo, new THREE.PointsMaterial({
+      size: 0.045,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.95,
+      blending: THREE.AdditiveBlending
+    }));
+    this.scene.add(this.anarParticles);
+
+    this.anarLight = new THREE.PointLight(0xFFD700, 2.2, 5);
+    this.anarLight.position.set(-1.8, 0.5, -14.2);
+    this.scene.add(this.anarLight);
+
+    // 2. Chakri (Ground Spinner) in Courtyard
+    this.chakriGroup = new THREE.Group();
+    const chakriDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.02, 16), this.matBrass);
+    chakriDisc.position.set(1.8, 0.02, -14.2);
+    this.chakriGroup.add(chakriDisc);
+
+    const chakriCount = 300;
+    const chakriGeo = new THREE.BufferGeometry();
+    const chakriPos = new Float32Array(chakriCount * 3);
+    const chakriCols = new Float32Array(chakriCount * 3);
+    this.chakriVelocities = [];
+
+    for (let i = 0; i < chakriCount; i++) {
+      chakriPos[i * 3 + 0] = 1.8;
+      chakriPos[i * 3 + 1] = 0.03;
+      chakriPos[i * 3 + 2] = -14.2;
+
+      this.chakriVelocities.push({
+        radius: Math.random() * 1.3 + 0.1,
+        angle: Math.random() * Math.PI * 2,
+        speed: Math.random() * 8 + 12
+      });
+
+      chakriCols[i * 3 + 0] = 1.0;
+      chakriCols[i * 3 + 1] = 0.85;
+      chakriCols[i * 3 + 2] = 0.3;
+    }
+    chakriGeo.setAttribute('position', new THREE.BufferAttribute(chakriPos, 3));
+    chakriGeo.setAttribute('color', new THREE.BufferAttribute(chakriCols, 3));
+
+    this.chakriParticles = new THREE.Points(chakriGeo, new THREE.PointsMaterial({
+      size: 0.045,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending
+    }));
+    this.chakriGroup.add(this.chakriParticles);
+    this.scene.add(this.chakriGroup);
+
+    // 3. Hand Sparkler (Phooljhadi)
+    const sparklerCount = 200;
+    const sparklerGeo = new THREE.BufferGeometry();
+    const sparklerPos = new Float32Array(sparklerCount * 3);
+    const sparklerCols = new Float32Array(sparklerCount * 3);
+    this.sparklerVelocities = [];
+
+    for (let i = 0; i < sparklerCount; i++) {
+      sparklerPos[i * 3 + 0] = 0.6;
+      sparklerPos[i * 3 + 1] = 1.1;
+      sparklerPos[i * 3 + 2] = -5.8;
+
+      const phi = Math.random() * Math.PI * 2;
+      const theta = Math.random() * Math.PI;
+      const spd = Math.random() * 0.04 + 0.01;
+      this.sparklerVelocities.push({
+        vx: Math.sin(theta) * Math.cos(phi) * spd,
+        vy: Math.sin(theta) * Math.sin(phi) * spd,
+        vz: Math.cos(theta) * spd,
+        life: Math.random()
+      });
+
+      sparklerCols[i * 3 + 0] = 1.0;
+      sparklerCols[i * 3 + 1] = 0.92;
+      sparklerCols[i * 3 + 2] = 0.65;
+    }
+    sparklerGeo.setAttribute('position', new THREE.BufferAttribute(sparklerPos, 3));
+    sparklerGeo.setAttribute('color', new THREE.BufferAttribute(sparklerCols, 3));
+
+    this.sparklerParticles = new THREE.Points(sparklerGeo, new THREE.PointsMaterial({
+      size: 0.04,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.95,
+      blending: THREE.AdditiveBlending
+    }));
+    this.scene.add(this.sparklerParticles);
+  }
+
   buildBestuVarasCourtyard() {
     // Carved Teak Archway
     const archGroup = new THREE.Group();
@@ -758,6 +1047,87 @@ class DiwaliCinematicWorld {
       this.scene.fog.color.setHex(0x240D17);
       this.dirSunLight.color.setHex(0xE59866);
       this.dirSunLight.intensity = 1.4;
+    }
+
+    // 8. Laxmi Puja Incense Smoke Animation
+    if (this.incenseParticles) {
+      const pos = this.incenseParticles.geometry.attributes.position.array;
+      for (let i = 0; i < pos.length; i += 3) {
+        pos[i + 1] += 0.005;
+        pos[i + 0] += Math.sin(time * 2.5 + pos[i + 1] * 5.0) * 0.0012;
+        if (pos[i + 1] > 1.35) {
+          pos[i + 1] = 0.45;
+          pos[i + 0] = 0.18 + (Math.random() - 0.5) * 0.04;
+        }
+      }
+      this.incenseParticles.geometry.attributes.position.needsUpdate = true;
+    }
+
+    // 9. Anar (Flowerpot Fireworks) Golden Fountain
+    if (this.anarParticles && this.anarVelocities) {
+      const pos = this.anarParticles.geometry.attributes.position.array;
+      for (let i = 0; i < this.anarVelocities.length; i++) {
+        const v = this.anarVelocities[i];
+        pos[i * 3 + 0] += v.vx;
+        pos[i * 3 + 1] += v.vy;
+        pos[i * 3 + 2] += v.vz;
+        v.vy -= 0.0035; // gravity
+
+        v.life -= 0.016;
+        if (v.life <= 0 || pos[i * 3 + 1] < 0.05) {
+          pos[i * 3 + 0] = -1.8;
+          pos[i * 3 + 1] = 0.24;
+          pos[i * 3 + 2] = -14.2;
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 0.05 + 0.015;
+          v.vx = Math.cos(angle) * speed;
+          v.vy = Math.random() * 0.11 + 0.07;
+          v.vz = Math.sin(angle) * speed;
+          v.life = 1.0;
+        }
+      }
+      this.anarParticles.geometry.attributes.position.needsUpdate = true;
+      if (this.anarLight) {
+        this.anarLight.intensity = 1.8 + Math.sin(time * 30.0) * 0.7;
+      }
+    }
+
+    // 10. Chakri (Ground Spinner Firework) Rotating Sparks
+    if (this.chakriParticles && this.chakriVelocities) {
+      const pos = this.chakriParticles.geometry.attributes.position.array;
+      for (let i = 0; i < this.chakriVelocities.length; i++) {
+        const c = this.chakriVelocities[i];
+        c.angle += c.speed * delta;
+        pos[i * 3 + 0] = 1.8 + Math.cos(c.angle) * c.radius;
+        pos[i * 3 + 1] = 0.03 + Math.sin(time * 12 + i) * 0.012;
+        pos[i * 3 + 2] = -14.2 + Math.sin(c.angle) * c.radius;
+      }
+      this.chakriParticles.geometry.attributes.position.needsUpdate = true;
+    }
+
+    // 11. Hand Sparkler (Phooljhadi) Twinkling Sparks
+    if (this.sparklerParticles && this.sparklerVelocities) {
+      const pos = this.sparklerParticles.geometry.attributes.position.array;
+      for (let i = 0; i < this.sparklerVelocities.length; i++) {
+        const s = this.sparklerVelocities[i];
+        pos[i * 3 + 0] += s.vx;
+        pos[i * 3 + 1] += s.vy;
+        pos[i * 3 + 2] += s.vz;
+        s.life -= 0.035;
+        if (s.life <= 0) {
+          pos[i * 3 + 0] = 0.6;
+          pos[i * 3 + 1] = 1.1;
+          pos[i * 3 + 2] = -5.8;
+          const phi = Math.random() * Math.PI * 2;
+          const theta = Math.random() * Math.PI;
+          const spd = Math.random() * 0.035 + 0.01;
+          s.vx = Math.sin(theta) * Math.cos(phi) * spd;
+          s.vy = Math.sin(theta) * Math.sin(phi) * spd;
+          s.vz = Math.cos(theta) * spd;
+          s.life = 1.0;
+        }
+      }
+      this.sparklerParticles.geometry.attributes.position.needsUpdate = true;
     }
 
     // Render 3D Scene

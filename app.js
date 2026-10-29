@@ -383,6 +383,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 9B. Laxmi Puja & Fireworks (Phatakas) Interactions
+  const pujaAartiBtn = document.getElementById('puja-aarti-btn');
+  if (pujaAartiBtn) {
+    pujaAartiBtn.addEventListener('click', () => {
+      if (window.diwaliAudio) {
+        window.diwaliAudio.playPujaAartiBell();
+      }
+      showToast('Sacred Laxmi Puja Aarti Offered 🪔');
+    });
+  }
+
+  const lightSparklerBtn = document.getElementById('light-sparkler-btn');
+  if (lightSparklerBtn) {
+    lightSparklerBtn.addEventListener('click', () => {
+      if (window.diwaliAudio) {
+        window.diwaliAudio.playSparklerSizzle();
+      }
+      showToast('Diwali Sparkler (Phooljhadi) Lit! ✨');
+    });
+  }
+
+  const burstAnarBtn = document.getElementById('burst-anar-btn');
+  if (burstAnarBtn) {
+    burstAnarBtn.addEventListener('click', () => {
+      if (window.diwaliAudio) {
+        window.diwaliAudio.playSparklerSizzle();
+      }
+      showToast('Courtyard Anar Firework Fountain Ignited! 🎆');
+    });
+  }
+
   // 10. Web Share API & Clipboard Fallback
   if (shareBtn) {
     shareBtn.addEventListener('click', async () => {
