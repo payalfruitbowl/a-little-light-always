@@ -107,85 +107,118 @@
     
     <!-- 0. Prologue Screen -->
     <section class="scene-layer is-active" id="layer-prologue" aria-label="Opening Prologue">
-      <div class="prologue-content">
+      <div class="story-day-card prologue-card">
         <span class="prologue-eyebrow">A Continuous Five-Day Journey</span>
         <h2 class="prologue-title">A Little Light, <em>Always</em></h2>
+        <span class="brand-sub" style="font-size: 0.85rem; margin-bottom: 1.2rem;">A Diwali Story by Payal</span>
         <p class="prologue-desc">
-          An interactive cinematic narrative following an Indian family through five days of gratitude, renewal, and togetherness across the Gujarati Diwali festival.
+          Step into an interactive animated film following an Indian family through five days of abundance, renewal, celebration, and gratitude across the Gujarati Diwali festival.
         </p>
-        <div class="scroll-indicator" aria-hidden="true">
+        <div class="scroll-indicator" id="start-scroll-trigger" role="button" aria-label="Begin scrolling through the story">
           <div class="scroll-pill">
             <div class="scroll-wheel"></div>
           </div>
-          <span class="scroll-text">Scroll to Begin</span>
+          <span class="scroll-text">Scroll Down to Begin Day 1</span>
         </div>
       </div>
     </section>
 
     <!-- 1. Chapter 1: Dhanteras -->
-    <section class="scene-layer" id="layer-dhanteras" aria-label="Chapter 1: Dhanteras">
-      <div class="chapter-content align-left">
+    <section class="scene-layer" id="layer-dhanteras" aria-label="Day 1: Dhanteras">
+      <div class="story-day-card chapter-card">
+        <div class="day-card-header">
+          <span class="day-number-tag">DAY 01 OF 05</span>
+          <span class="day-time-tag">Warm Afternoon</span>
+        </div>
         <div class="chapter-tagline">DHANTERAS — THE FIRST GIFT</div>
         <h2 class="chapter-heading">The First Gift</h2>
-        <p class="chapter-quote">
-          “May abundance find its way into your home, and happiness into the <strong>smallest moments</strong>.”
+        <p class="chapter-story-text">
+          A warm afternoon in an elegant Gujarati home. A loved one arrives carrying a velvet burgundy gift box tied with a satin champagne-gold ribbon, placing gratitude at the center of the table.
         </p>
+        <blockquote class="chapter-quote">
+          “May abundance find its way into your home, and happiness into the <strong>smallest moments</strong>.”
+        </blockquote>
         <button id="open-gift-btn" class="scene-interaction-cue">
-          <span>✦ Unwrap the Blessing</span>
+          <span>✦ Unwrap the Dhanteras Blessing</span>
         </button>
       </div>
     </section>
 
     <!-- 2. Chapter 2: Kali Chaudas -->
-    <section class="scene-layer" id="layer-kali-chaudas" aria-label="Chapter 2: Kali Chaudas">
-      <div class="chapter-content align-right">
+    <section class="scene-layer" id="layer-kali-chaudas" aria-label="Day 2: Kali Chaudas">
+      <div class="story-day-card chapter-card">
+        <div class="day-card-header">
+          <span class="day-number-tag">DAY 02 OF 05</span>
+          <span class="day-time-tag">Early Morning</span>
+        </div>
         <div class="chapter-tagline">KALI CHAUDAS — A FRESH BEGINNING</div>
         <h2 class="chapter-heading">A Fresh Beginning</h2>
-        <p class="chapter-quote">
-          “May you release what weighs you down and <strong>welcome what helps you grow</strong>.”
+        <p class="chapter-story-text">
+          The next morning. As the carved teak shutters swing open, beams of sunlight enter the quiet room, illuminating floating dust motes and clearing away old shadows for the festive days ahead.
         </p>
+        <blockquote class="chapter-quote">
+          “May you release what weighs you down and <strong>welcome what helps you grow</strong>.”
+        </blockquote>
       </div>
     </section>
 
     <!-- 3. Chapter 3: Diwali (Climax) -->
-    <section class="scene-layer" id="layer-diwali" aria-label="Chapter 3: Diwali">
-      <div class="chapter-content align-center diwali-grand-hero">
+    <section class="scene-layer" id="layer-diwali" aria-label="Day 3: Diwali">
+      <div class="story-day-card chapter-card diwali-card">
+        <div class="day-card-header" style="justify-content: center;">
+          <span class="day-number-tag" style="background: var(--color-gold); color: var(--color-espresso);">DAY 03 OF 05 • THE FESTIVE CLIMAX</span>
+        </div>
         <div class="diwali-ornament" aria-hidden="true">✦ ✦ ✦</div>
         <div class="diwali-title-mask">
           <h2 class="diwali-grand-title">Happy Diwali</h2>
         </div>
-        <div class="chapter-tagline">DIWALI — THE HOUSE COMES ALIVE</div>
-        <p class="diwali-subtitle">
-          “May your life be rich in love, your home in laughter, and your future in possibility.”
+        <div class="chapter-tagline" style="justify-content: center;">THE HOUSE COMES ALIVE</div>
+        <p class="chapter-story-text" style="max-width: 620px; margin: 0.8rem auto 1.4rem;">
+          The home is transformed by dozens of flickering oil diyas and fragrant marigolds. Silks of deep burgundy and antique gold shimmer as family members gather to share sweets, laughter, and light.
         </p>
+        <blockquote class="chapter-quote" style="max-width: 600px; margin: 0 auto;">
+          “May your life be rich in love, your home in laughter, and your future in <strong>possibility</strong>.”
+        </blockquote>
       </div>
     </section>
 
     <!-- 4. Chapter 4: Bestu Varas -->
-    <section class="scene-layer" id="layer-bestu-varas" aria-label="Chapter 4: Bestu Varas">
-      <div class="chapter-content align-left">
-        <span class="saal-mubarak-pill">Saal Mubarak!</span>
-        <div class="chapter-tagline">BESTU VARAS — DOORS TO TOMORROW</div>
+    <section class="scene-layer" id="layer-bestu-varas" aria-label="Day 4: Bestu Varas">
+      <div class="story-day-card chapter-card">
+        <div class="day-card-header">
+          <span class="day-number-tag">DAY 04 OF 05</span>
+          <span class="saal-mubarak-pill">Saal Mubarak!</span>
+        </div>
+        <div class="chapter-tagline">BESTU VARAS — GUJARATI NEW YEAR</div>
         <h2 class="chapter-heading">Doors to Tomorrow</h2>
-        <p class="chapter-quote">
-          “A new year. A fresh perspective. <strong>A thousand possibilities.</strong>”
+        <p class="chapter-story-text">
+          The dawn of a new year. Family members prepare to visit loved ones as the front doors open onto a sunlit courtyard decorated with floral rangoli and fresh marigold torans.
         </p>
+        <blockquote class="chapter-quote">
+          “A new year. A fresh perspective. <strong>A thousand possibilities.</strong>”
+        </blockquote>
       </div>
     </section>
 
     <!-- 5. Chapter 5: Bhai Bij & Final Greeting -->
-    <section class="scene-layer" id="layer-bhai-bij" aria-label="Chapter 5: Bhai Bij and Final Message">
-      <div class="final-greeting-card">
-        <div class="chapter-tagline" style="justify-content: center;">BHAI BIJ — WHAT MATTERS MOST</div>
-        <p class="chapter-quote" style="margin-bottom: 1rem; font-size: 1.15rem;">
-          “Wherever life takes you, may you always find your way back to the people who feel like home.”
+    <section class="scene-layer" id="layer-bhai-bij" aria-label="Day 5: Bhai Bij and Final Message">
+      <div class="story-day-card final-greeting-card">
+        <div class="day-card-header" style="justify-content: center;">
+          <span class="day-number-tag">DAY 05 OF 05 • BHAI BIJ</span>
+        </div>
+        <div class="chapter-tagline" style="justify-content: center;">WHAT MATTERS MOST</div>
+        <p class="chapter-story-text" style="text-align: center; margin-bottom: 1.2rem;">
+          Quiet twilight settles over the verandah. A brother and sister share a sincere moment by the silver aarti thali, reminding us of the bonds that anchor our lives.
         </p>
+        <blockquote class="chapter-quote" style="font-size: 1.15rem; margin-bottom: 1.4rem;">
+          “Wherever life takes you, may you always find your way back to the people who feel like home.”
+        </blockquote>
 
         <div class="card-flourish" aria-hidden="true"></div>
 
         <h2 class="final-title">A Little Light, Always.</h2>
         <p class="final-message">
-          Wishing you and your loved ones a beautiful Diwali and a wonderful year ahead filled with peace, prosperity, and laughter.
+          Wishing you and your loved ones a beautiful Diwali and a wonderful year ahead filled with peace, health, and laughter.
         </p>
 
         <div class="signature-block">

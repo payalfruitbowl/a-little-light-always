@@ -159,21 +159,90 @@ document.addEventListener('DOMContentLoaded', () => {
       onChapterChanged(activeIdx);
     }
 
-    // D. Soft Opacity & Transform Fade for Story Text Layers
+    // D. Story Layer Visibility Envelope (shows one by one in sequence as user scrolls)
     sceneLayers.forEach((layer, idx) => {
-      const ch = chapters[idx];
-      const mid = (ch.start + ch.end) / 2;
-      const span = (ch.end - ch.start) / 2;
-      const dist = Math.abs(currentProgress - mid);
+      let opacity = 0;
+      let yOffset = 0;
 
-      if (dist < span * 1.15) {
+      if (idx === 0) {
+        // Prologue: 100% visible from 0.00 to 0.05, fades smoothly out by 0.12
+        if (currentProgress <= 0.05) {
+          opacity = 1;
+          yOffset = 0;
+        } else if (currentProgress <= 0.12) {
+          opacity = 1 - (currentProgress - 0.05) / 0.07;
+          yOffset = -(currentProgress - 0.05) * 200;
+        }
+      } else if (idx === 1) {
+        // Day 1: Dhanteras (emerges 0.08, full 0.15 to 0.25, leaves by 0.32)
+        if (currentProgress >= 0.08 && currentProgress < 0.15) {
+          opacity = (currentProgress - 0.08) / 0.07;
+          yOffset = 25 * (1 - opacity);
+        } else if (currentProgress >= 0.15 && currentProgress <= 0.25) {
+          opacity = 1;
+          yOffset = 0;
+        } else if (currentProgress > 0.25 && currentProgress <= 0.32) {
+          opacity = 1 - (currentProgress - 0.25) / 0.07;
+          yOffset = -25 * (1 - opacity);
+        }
+      } else if (idx === 2) {
+        // Day 2: Kali Chaudas (emerges 0.28, full 0.35 to 0.45, leaves by 0.52)
+        if (currentProgress >= 0.28 && currentProgress < 0.35) {
+          opacity = (currentProgress - 0.28) / 0.07;
+          yOffset = 25 * (1 - opacity);
+        } else if (currentProgress >= 0.35 && currentProgress <= 0.45) {
+          opacity = 1;
+          yOffset = 0;
+        } else if (currentProgress > 0.45 && currentProgress <= 0.52) {
+          opacity = 1 - (currentProgress - 0.45) / 0.07;
+          yOffset = -25 * (1 - opacity);
+        }
+      } else if (idx === 3) {
+        // Day 3: Diwali Climax (emerges 0.48, full 0.55 to 0.65, leaves by 0.72)
+        if (currentProgress >= 0.48 && currentProgress < 0.55) {
+          opacity = (currentProgress - 0.48) / 0.07;
+          yOffset = 25 * (1 - opacity);
+        } else if (currentProgress >= 0.55 && currentProgress <= 0.65) {
+          opacity = 1;
+          yOffset = 0;
+        } else if (currentProgress > 0.65 && currentProgress <= 0.72) {
+          opacity = 1 - (currentProgress - 0.65) / 0.07;
+          yOffset = -25 * (1 - opacity);
+        }
+      } else if (idx === 4) {
+        // Day 4: Bestu Varas (emerges 0.68, full 0.74 to 0.83, leaves by 0.89)
+        if (currentProgress >= 0.68 && currentProgress < 0.74) {
+          opacity = (currentProgress - 0.68) / 0.06;
+          yOffset = 25 * (1 - opacity);
+        } else if (currentProgress >= 0.74 && currentProgress <= 0.83) {
+          opacity = 1;
+          yOffset = 0;
+        } else if (currentProgress > 0.83 && currentProgress <= 0.89) {
+          opacity = 1 - (currentProgress - 0.83) / 0.06;
+          yOffset = -25 * (1 - opacity);
+        }
+      } else if (idx === 5) {
+        // Day 5: Bhai Bij & Final Greeting (emerges 0.85, full 0.91 to 1.00)
+        if (currentProgress >= 0.85 && currentProgress < 0.91) {
+          opacity = (currentProgress - 0.85) / 0.06;
+          yOffset = 25 * (1 - opacity);
+        } else if (currentProgress >= 0.91) {
+          opacity = 1;
+          yOffset = 0;
+        }
+      }
+
+      opacity = Math.max(0, Math.min(1, opacity));
+
+      if (opacity > 0.01) {
         layer.classList.add('is-active');
-        const fade = Math.max(0, 1 - (dist / (span * 0.95)));
-        layer.style.opacity = Math.min(1, fade * 1.5);
-        layer.style.pointerEvents = fade > 0.4 ? 'auto' : 'none';
+        layer.style.opacity = opacity.toFixed(3);
+        layer.style.transform = `translate3d(0, ${yOffset.toFixed(1)}px, 0)`;
+        layer.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none';
       } else {
         layer.classList.remove('is-active');
         layer.style.opacity = '0';
+        layer.style.transform = 'translate3d(0, 30px, 0)';
         layer.style.pointerEvents = 'none';
       }
     });
