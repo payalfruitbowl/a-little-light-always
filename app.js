@@ -390,6 +390,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.diwaliAudio) {
         window.diwaliAudio.playPujaAartiBell();
       }
+      if (world && world.triggerPujaAarti) {
+        world.triggerPujaAarti();
+      }
       showToast('Sacred Laxmi Puja Aarti Offered 🪔');
     });
   }
@@ -400,6 +403,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.diwaliAudio) {
         window.diwaliAudio.playSparklerSizzle();
       }
+      if (world && world.triggerSparklerBurst) {
+        world.triggerSparklerBurst();
+      }
       showToast('Diwali Sparkler (Phooljhadi) Lit! ✨');
     });
   }
@@ -409,6 +415,9 @@ document.addEventListener('DOMContentLoaded', () => {
     burstAnarBtn.addEventListener('click', () => {
       if (window.diwaliAudio) {
         window.diwaliAudio.playSparklerSizzle();
+      }
+      if (world && world.triggerAnarBurst) {
+        world.triggerAnarBurst();
       }
       showToast('Courtyard Anar Firework Fountain Ignited! 🎆');
     });

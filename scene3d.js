@@ -67,7 +67,7 @@ class DiwaliCinematicWorld {
     this.scene.fog = new THREE.FogExp2(0x2A111B, 0.018);
 
     // 2. Camera Setup
-    this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 0.1, 150);
+    this.camera = new THREE.PerspectiveCamera(50, this.width / this.height, 0.1, 150);
     this.setupCameraSplines();
 
     // 3. Renderer Setup
@@ -114,12 +114,12 @@ class DiwaliCinematicWorld {
       new THREE.Vector3(0, 0.55, 1.2),    // 0.20: Dhanteras ribbon contact
       new THREE.Vector3(-1.8, 1.1, 0.2),  // 0.30: Kali Chaudas - Facing shutters
       new THREE.Vector3(-0.6, 1.2, -1.8), // 0.40: Sunlight expansion through window
-      new THREE.Vector3(0, 1.35, -4.5),   // 0.50: Diwali Grand Gathering centre
-      new THREE.Vector3(0.5, 1.1, -6.8),  // 0.60: Gift pass across lens
-      new THREE.Vector3(0, 1.5, -9.5),    // 0.70: Bestu Varas doorway approach
-      new THREE.Vector3(0, 1.4, -13.0),   // 0.80: Courtyard sunlit path
-      new THREE.Vector3(0.8, 1.3, -16.5), // 0.90: Bhai Bij aarti close moment
-      new THREE.Vector3(0, 2.0, -12.5)    // 1.00: Bhai Bij wide cinematic pull-back
+      new THREE.Vector3(0.3, 1.15, -4.5),  // 0.50: Diwali Grand Gathering centre (eye-level living room)
+      new THREE.Vector3(0.4, 1.05, -6.8), // 0.60: Focus on Laxmi Puja Altar & sparklers
+      new THREE.Vector3(0, 1.35, -9.5),   // 0.70: Bestu Varas doorway approach
+      new THREE.Vector3(-0.3, 1.2, -13.0),// 0.80: Courtyard sunlit path with Anar & Chakri
+      new THREE.Vector3(0.6, 1.15, -16.5),// 0.90: Bhai Bij aarti close moment
+      new THREE.Vector3(0, 1.8, -12.5)    // 1.00: Bhai Bij wide cinematic pull-back
     ];
     this.cameraCurve = new THREE.CatmullRomCurve3(camPoints, false, 'catmullrom', 0.25);
 
@@ -130,12 +130,12 @@ class DiwaliCinematicWorld {
       new THREE.Vector3(0, 0.55, 0),      // Ribbon detail
       new THREE.Vector3(-3.5, 1.6, -0.5), // Kali Chaudas shutters
       new THREE.Vector3(-4.0, 1.8, -1.5), // Sunlight source
-      new THREE.Vector3(0, 1.1, -7.5),    // Diwali hall
-      new THREE.Vector3(0.8, 1.0, -7.5),  // Diwali gift pass
-      new THREE.Vector3(0, 1.6, -14.0),   // Courtyard archway
-      new THREE.Vector3(0, 1.2, -16.0),   // Courtyard garden & rangoli
-      new THREE.Vector3(1.2, 0.9, -18.5), // Brother-sister aarti thali
-      new THREE.Vector3(0, 1.1, -18.5)    // Verandah wide view
+      new THREE.Vector3(0, 0.9, -7.5),    // Diwali hall & Mandir view
+      new THREE.Vector3(0, 0.75, -8.0),   // Direct close view of Laxmi Puja Chowki & Akhand Diya
+      new THREE.Vector3(0, 1.4, -14.0),   // Courtyard archway
+      new THREE.Vector3(-1.0, 0.6, -14.5),// Courtyard Anar fountain & Rangoli
+      new THREE.Vector3(1.1, 0.7, -18.2), // Brother-sister aarti thali
+      new THREE.Vector3(0, 0.9, -18.0)    // Verandah wide view
     ];
     this.lookAtCurve = new THREE.CatmullRomCurve3(targetPoints, false, 'catmullrom', 0.25);
   }
@@ -242,12 +242,89 @@ class DiwaliCinematicWorld {
     floor.receiveShadow = true;
     this.scene.add(floor);
 
+    // Living Room Walls - Warm Ivory Terracotta Plaster with Skirting
+    const leftWallGeo = new THREE.PlaneGeometry(40, 3.8);
+    const wallMat = new THREE.MeshStandardMaterial({
+      color: 0x2A151D,
+      roughness: 0.9,
+      metalness: 0.05
+    });
+    const leftWall = new THREE.Mesh(leftWallGeo, wallMat);
+    leftWall.position.set(-4.0, 1.9, -8);
+    leftWall.rotation.y = Math.PI / 2;
+    leftWall.receiveShadow = true;
+    this.scene.add(leftWall);
+
+    const rightWall = new THREE.Mesh(leftWallGeo, wallMat);
+    rightWall.position.set(4.0, 1.9, -8);
+    rightWall.rotation.y = -Math.PI / 2;
+    rightWall.receiveShadow = true;
+    this.scene.add(rightWall);
+
+    // Back Hall Wall behind Mandir
+    const backWallGeo = new THREE.PlaneGeometry(8, 3.8);
+    const backWall = new THREE.Mesh(backWallGeo, wallMat);
+    backWall.position.set(0, 1.9, -9.8);
+    backWall.receiveShadow = true;
+    this.scene.add(backWall);
+
+    // Decorative Floral Border Trim (Kashida / Toran pattern) along the ceiling line
+    const borderGeo = new THREE.BoxGeometry(0.1, 0.15, 30);
+    const borderL = new THREE.Mesh(borderGeo, this.matChampagneGold);
+    borderL.position.set(-3.95, 3.7, -8);
+    this.scene.add(borderL);
+    const borderR = new THREE.Mesh(borderGeo, this.matChampagneGold);
+    borderR.position.set(3.95, 3.7, -8);
+    this.scene.add(borderR);
+
+    // Traditional Indian Living Room Rug (Kashmiri Floral Carpet) under the center table
+    const carpetCanvas = document.createElement('canvas');
+    carpetCanvas.width = 512;
+    carpetCanvas.height = 512;
+    const cCtx = carpetCanvas.getContext('2d');
+    cCtx.fillStyle = '#4A1220'; // Deep burgundy velvet base
+    cCtx.fillRect(0, 0, 512, 512);
+    cCtx.strokeStyle = '#D4AF37'; // Gold embroidered border
+    cCtx.lineWidth = 16;
+    cCtx.strokeRect(20, 20, 472, 472);
+    cCtx.lineWidth = 4;
+    cCtx.strokeRect(40, 40, 432, 432);
+    // Persian / Gujarati Paisley Motif
+    cCtx.fillStyle = 'rgba(212, 175, 55, 0.35)';
+    for (let rx = 80; rx < 460; rx += 70) {
+      for (let ry = 80; ry < 460; ry += 70) {
+        cCtx.beginPath();
+        cCtx.arc(rx, ry, 18, 0, Math.PI * 2);
+        cCtx.fill();
+      }
+    }
+    const carpetTex = new THREE.CanvasTexture(carpetCanvas);
+    const carpetGeo = new THREE.PlaneGeometry(3.6, 5.0);
+    const carpetMat = new THREE.MeshStandardMaterial({
+      map: carpetTex,
+      roughness: 0.85,
+      metalness: 0.05
+    });
+    const livingCarpet = new THREE.Mesh(carpetGeo, carpetMat);
+    livingCarpet.rotation.x = -Math.PI / 2;
+    livingCarpet.position.set(0, 0.012, 0.5);
+    livingCarpet.receiveShadow = true;
+    this.scene.add(livingCarpet);
+
     // Ceiling with wooden beams
     const ceilingGeo = new THREE.PlaneGeometry(16, 40);
     const ceiling = new THREE.Mesh(ceilingGeo, this.matTeak);
     ceiling.rotation.x = Math.PI / 2;
     ceiling.position.set(0, 3.8, -8);
     this.scene.add(ceiling);
+
+    // Wooden Cross-Beams on Ceiling (Exposed Raft Architecture)
+    const beamGeo = new THREE.BoxGeometry(8, 0.18, 0.25);
+    for (let bz = 4; bz >= -10; bz -= 2.5) {
+      const beam = new THREE.Mesh(beamGeo, this.matTeak);
+      beam.position.set(0, 3.7, bz);
+      this.scene.add(beam);
+    }
 
     // Carved Gujarati Pillars along the corridor
     const pillarGeo = new THREE.CylinderGeometry(0.18, 0.22, 3.8, 16);
@@ -336,6 +413,53 @@ class DiwaliCinematicWorld {
     diya.position.set(0.45, 0.62, -0.2);
     tableGroup.add(diya);
     this.createFlame(tableGroup, new THREE.Vector3(0.45, 0.68, -0.2));
+
+    // Authentic Indian Living Room Teak Sofa Set with Silk Cushions
+    const sofaGroup = new THREE.Group();
+    // Sofa Base
+    const sofaBase = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.45, 0.85), this.matTeak);
+    sofaBase.position.set(0, 0.22, 0);
+    sofaBase.castShadow = true;
+    sofaGroup.add(sofaBase);
+    // Sofa Velvet Cushion Seat
+    const sofaCushion = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.18, 0.8), this.matVelvet);
+    sofaCushion.position.set(0, 0.48, 0.02);
+    sofaGroup.add(sofaCushion);
+    // Sofa Backrest
+    const sofaBack = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.65, 0.16), this.matTeak);
+    sofaBack.position.set(0, 0.72, -0.36);
+    sofaGroup.add(sofaBack);
+    // Sofa Back Cushion
+    const sofaBackCushion = new THREE.Mesh(new THREE.BoxGeometry(2.45, 0.5, 0.1), this.matVelvet);
+    sofaBackCushion.position.set(0, 0.72, -0.28);
+    sofaGroup.add(sofaBackCushion);
+    // 2 Gold Silk Bolsters (Masand / Gaddi Cushions)
+    const bolsterGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.65, 16);
+    const bolsterL = new THREE.Mesh(bolsterGeo, this.matChampagneGold);
+    bolsterL.rotation.z = Math.PI / 2;
+    bolsterL.position.set(-0.8, 0.65, -0.15);
+    sofaGroup.add(bolsterL);
+    const bolsterR = new THREE.Mesh(bolsterGeo, this.matChampagneGold);
+    bolsterR.rotation.z = Math.PI / 2;
+    bolsterR.position.set(0.8, 0.65, -0.15);
+    sofaGroup.add(bolsterR);
+
+    sofaGroup.position.set(0, 0, -1.8);
+    this.scene.add(sofaGroup);
+
+    // Side Table with Polished Brass Flower Vase & Marigolds
+    const sideTable = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.65, 16), this.matTeak);
+    sideTable.position.set(2.0, 0.32, -1.6);
+    this.scene.add(sideTable);
+    const vase = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.08, 0.35, 16), this.matBrass);
+    vase.position.set(2.0, 0.82, -1.6);
+    this.scene.add(vase);
+    // Flowers in vase
+    for (let f = 0; f < 6; f++) {
+      const fl = new THREE.Mesh(new THREE.SphereGeometry(0.05, 8, 8), new THREE.MeshStandardMaterial({ color: 0xF59E0B }));
+      fl.position.set(2.0 + (Math.random() - 0.5) * 0.15, 1.05 + Math.random() * 0.12, -1.6 + (Math.random() - 0.5) * 0.15);
+      this.scene.add(fl);
+    }
 
     tableGroup.position.set(0, 0, 0);
     this.scene.add(tableGroup);
@@ -465,6 +589,47 @@ class DiwaliCinematicWorld {
   buildLaxmiPujaAltar() {
     this.pujaAltar = new THREE.Group();
 
+    // 0. Traditional Carved Wooden Mandir / Temple Canopy Structure
+    const mandirFrame = new THREE.Group();
+    // Mandir Pillars
+    const mPillarGeo = new THREE.CylinderGeometry(0.04, 0.05, 1.4, 12);
+    [[-0.95, -0.45], [0.95, -0.45], [-0.95, 0.45], [0.95, 0.45]].forEach(pos => {
+      const p = new THREE.Mesh(mPillarGeo, this.matTeak);
+      p.position.set(pos[0], 0.85, pos[1]);
+      mandirFrame.add(p);
+    });
+    // Mandir Shikhar (Carved Dome Roof)
+    const domeGeo = new THREE.ConeGeometry(0.65, 0.75, 16);
+    const dome = new THREE.Mesh(domeGeo, this.matTeak);
+    dome.position.set(0, 1.9, 0);
+    mandirFrame.add(dome);
+    // Golden Kalash on Mandir peak
+    const peakKalash = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 12), this.matChampagneGold);
+    peakKalash.position.set(0, 2.35, 0);
+    mandirFrame.add(peakKalash);
+    // Mandir Roof Arch Frame
+    const roofBeam = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.1, 1.0), this.matTeak);
+    roofBeam.position.set(0, 1.55, 0);
+    mandirFrame.add(roofBeam);
+
+    // Hanging Brass Mandir Ghanti (Temple Bell)
+    const bellChain = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.35), this.matBrass);
+    bellChain.position.set(0, 1.35, 0.25);
+    mandirFrame.add(bellChain);
+    const bellDome = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.1, 16), this.matBrass);
+    bellDome.position.set(0, 1.15, 0.25);
+    mandirFrame.add(bellDome);
+
+    // Fresh Orange Marigold Garland (Genda Phool Mala) draped across Mandir arch
+    const garlandGeo = new THREE.TorusGeometry(0.9, 0.04, 8, 24, Math.PI);
+    const garlandMat = new THREE.MeshStandardMaterial({ color: 0xF59E0B, roughness: 0.65 });
+    const garland = new THREE.Mesh(garlandGeo, garlandMat);
+    garland.position.set(0, 1.52, 0.46);
+    garland.rotation.z = Math.PI;
+    mandirFrame.add(garland);
+
+    this.pujaAltar.add(mandirFrame);
+
     // 1. Red Silk & Velvet Chowki (Altar Platform)
     const chowkiGeo = new THREE.BoxGeometry(1.8, 0.28, 1.0);
     const chowkiMat = new THREE.MeshStandardMaterial({
@@ -568,6 +733,28 @@ class DiwaliCinematicWorld {
     this.pujaAltar.add(akhandDiya);
     this.createFlame(this.pujaAltar, new THREE.Vector3(0, 0.44, 0.3));
 
+    // Sacred Brass Kalash with Green Mango Leaves & Swastik
+    const kalashGroup = new THREE.Group();
+    const kPot = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), this.matBrass);
+    kPot.position.y = 0.39;
+    kalashGroup.add(kPot);
+    const kCoconut = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 12), new THREE.MeshStandardMaterial({ color: 0x5C381E, roughness: 0.85 }));
+    kCoconut.position.y = 0.52;
+    kalashGroup.add(kCoconut);
+    // 5 Mango Leaves (Aam ke Patte)
+    for (let l = 0; l < 5; l++) {
+      const lAngle = (l / 5) * Math.PI * 2;
+      const leafGeo = new THREE.ConeGeometry(0.04, 0.12, 6);
+      const leafMat = new THREE.MeshStandardMaterial({ color: 0x15803D, roughness: 0.6 });
+      const leaf = new THREE.Mesh(leafGeo, leafMat);
+      leaf.position.set(Math.cos(lAngle) * 0.08, 0.46, Math.sin(lAngle) * 0.08);
+      leaf.rotation.z = Math.cos(lAngle) * 0.4;
+      leaf.rotation.x = Math.sin(lAngle) * 0.4;
+      kalashGroup.add(leaf);
+    }
+    kalashGroup.position.set(0, 0, -0.2);
+    this.pujaAltar.add(kalashGroup);
+
     // Warm dedicated light from puja diya
     const pujaGlow = new THREE.PointLight(0xFFAA33, 2.0, 4.5);
     pujaGlow.position.set(0, 0.6, 0.3);
@@ -611,9 +798,21 @@ class DiwaliCinematicWorld {
 
   buildCourtyardFireworksAndSparklers() {
     // 1. Anar (Kothi / Flowerpot) in Courtyard
-    const anarCone = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.24, 16), this.matClay);
-    anarCone.position.set(-1.8, 0.12, -14.2);
+    const anarCone = new THREE.Mesh(new THREE.ConeGeometry(0.18, 0.32, 16), this.matClay);
+    anarCone.position.set(-1.8, 0.16, -14.2);
     this.scene.add(anarCone);
+    // Brass rim base for Anar
+    const anarBase = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.04, 16), this.matBrass);
+    anarBase.position.set(-1.8, 0.02, -14.2);
+    this.scene.add(anarBase);
+
+    // Rocket / Sky-Shot Launchers (Phatakas on ground)
+    const rocketBox = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.45, 0.35), new THREE.MeshStandardMaterial({ color: 0xB91C1C, roughness: 0.6 }));
+    rocketBox.position.set(-2.6, 0.22, -13.5);
+    this.scene.add(rocketBox);
+    const rocketTube = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.6), this.matChampagneGold);
+    rocketTube.position.set(-2.6, 0.45, -13.5);
+    this.scene.add(rocketTube);
 
     // Anar Showering Spark Particles
     const anarCount = 450;
@@ -1132,6 +1331,36 @@ class DiwaliCinematicWorld {
 
     // Render 3D Scene
     this.renderer.render(this.scene, this.camera);
+  }
+
+  triggerSparklerBurst() {
+    if (this.sparklerParticles) {
+      this.sparklerParticles.material.size = 0.09;
+      setTimeout(() => {
+        if (this.sparklerParticles) this.sparklerParticles.material.size = 0.045;
+      }, 4000);
+    }
+  }
+
+  triggerAnarBurst() {
+    if (this.anarParticles && this.anarLight) {
+      this.anarParticles.material.size = 0.085;
+      this.anarLight.intensity = 4.5;
+      setTimeout(() => {
+        if (this.anarParticles) this.anarParticles.material.size = 0.045;
+        if (this.anarLight) this.anarLight.intensity = 2.2;
+      }, 4500);
+    }
+  }
+
+  triggerPujaAarti() {
+    if (this.pujaAltar) {
+      const pl = this.pujaAltar.children.find(c => c.isPointLight);
+      if (pl) {
+        pl.intensity = 4.0;
+        setTimeout(() => { pl.intensity = 2.0; }, 3500);
+      }
+    }
   }
 }
 
