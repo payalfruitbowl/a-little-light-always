@@ -109,33 +109,33 @@ class DiwaliCinematicWorld {
   setupCameraSplines() {
     // Continuous 3D bezier camera trajectory through the house & courtyard
     const camPoints = [
-      new THREE.Vector3(0, 1.4, 6.5),     // 0.00: Prologue - Cinematic high entrance
-      new THREE.Vector3(0, 0.85, 3.2),    // 0.10: Dhanteras - Table push-in
-      new THREE.Vector3(0, 0.55, 1.2),    // 0.20: Dhanteras ribbon contact
-      new THREE.Vector3(-1.8, 1.1, 0.2),  // 0.30: Kali Chaudas - Facing shutters
-      new THREE.Vector3(-0.6, 1.2, -1.8), // 0.40: Sunlight expansion through window
-      new THREE.Vector3(0.3, 1.15, -4.5),  // 0.50: Diwali Grand Gathering centre (eye-level living room)
-      new THREE.Vector3(0.4, 1.05, -6.8), // 0.60: Focus on Laxmi Puja Altar & sparklers
-      new THREE.Vector3(0, 1.35, -9.5),   // 0.70: Bestu Varas doorway approach
-      new THREE.Vector3(-0.3, 1.2, -13.0),// 0.80: Courtyard sunlit path with Anar & Chakri
-      new THREE.Vector3(0.6, 1.15, -16.5),// 0.90: Bhai Bij aarti close moment
-      new THREE.Vector3(0, 1.8, -12.5)    // 1.00: Bhai Bij wide cinematic pull-back
+      new THREE.Vector3(0, 1.35, 4.2),     // 0.00: Prologue - Elegant view down the festive hall
+      new THREE.Vector3(0.15, 0.95, 2.2),  // 0.10: Dhanteras - Table push-in on the burgundy gift box
+      new THREE.Vector3(0.0, 0.72, 0.9),   // 0.20: Dhanteras ribbon contact
+      new THREE.Vector3(-1.4, 1.25, 0.4),  // 0.30: Kali Chaudas - Tracking towards the teak jharokha window
+      new THREE.Vector3(-1.8, 1.45, 0.1),  // 0.40: Directly facing the window as shutters swing open
+      new THREE.Vector3(0.0, 1.15, -4.8),  // 0.50: Diwali Living Room - Gliding into the glowing mandir
+      new THREE.Vector3(0.2, 0.95, -7.0),  // 0.60: Close reverence at the Laxmi Puja Chowki, Akhand Diya & Chopda
+      new THREE.Vector3(0.0, 1.35, -10.2), // 0.70: Bestu Varas doorway - passing under marigold toran
+      new THREE.Vector3(-0.9, 1.15, -13.6),// 0.80: Courtyard path - watching the Anar fountain & spinning Chakri
+      new THREE.Vector3(0.8, 1.05, -17.2), // 0.90: Bhai Bij aarti thali on the tranquil verandah
+      new THREE.Vector3(0.0, 1.6, -15.5)   // 1.00: Bhai Bij wide cinematic peaceful pull-back
     ];
     this.cameraCurve = new THREE.CatmullRomCurve3(camPoints, false, 'catmullrom', 0.25);
 
-    // Look-At Target Trajectory
+    // Look-At Target Trajectory (Points directly at the focal story objects for each day)
     const targetPoints = [
-      new THREE.Vector3(0, 0.8, 0),       // Prologue
-      new THREE.Vector3(0, 0.65, 0),      // Dhanteras gift
-      new THREE.Vector3(0, 0.55, 0),      // Ribbon detail
-      new THREE.Vector3(-3.5, 1.6, -0.5), // Kali Chaudas shutters
-      new THREE.Vector3(-4.0, 1.8, -1.5), // Sunlight source
-      new THREE.Vector3(0, 0.9, -7.5),    // Diwali hall & Mandir view
-      new THREE.Vector3(0, 0.75, -8.0),   // Direct close view of Laxmi Puja Chowki & Akhand Diya
-      new THREE.Vector3(0, 1.4, -14.0),   // Courtyard archway
-      new THREE.Vector3(-1.0, 0.6, -14.5),// Courtyard Anar fountain & Rangoli
-      new THREE.Vector3(1.1, 0.7, -18.2), // Brother-sister aarti thali
-      new THREE.Vector3(0, 0.9, -18.0)    // Verandah wide view
+      new THREE.Vector3(0, 0.9, 0),        // Prologue: Looking along the decorated living room
+      new THREE.Vector3(0, 0.65, 0),       // Dhanteras: Focusing on the Velvet Gift Box on the table
+      new THREE.Vector3(0, 0.62, 0),       // Dhanteras: Champagne gold ribbon detail
+      new THREE.Vector3(-3.1, 1.7, 0),     // Kali Chaudas: Looking directly at the closed shutters
+      new THREE.Vector3(-3.4, 1.75, 0),    // Kali Chaudas: Sunlight streaming through the open window
+      new THREE.Vector3(0, 1.0, -8.0),     // Diwali: Looking toward the home temple Mandir
+      new THREE.Vector3(0, 0.65, -8.0),    // Diwali: Focused on Laxmi-Ganesha idols & Akhand Diya
+      new THREE.Vector3(0, 1.5, -14.0),    // Bestu Varas: Looking forward through the courtyard archway
+      new THREE.Vector3(-1.8, 0.45, -14.2),// Bestu Varas: Looking down at the showering Anar & floral rangoli
+      new THREE.Vector3(1.1, 0.6, -18.2),  // Bhai Bij: Focused on the silver Aarti thali & diya
+      new THREE.Vector3(0, 1.0, -18.2)     // Bhai Bij: Final wide view across the family verandah
     ];
     this.lookAtCurve = new THREE.CatmullRomCurve3(targetPoints, false, 'catmullrom', 0.25);
   }
@@ -1215,37 +1215,47 @@ class DiwaliCinematicWorld {
       this.dustParticles.geometry.attributes.position.needsUpdate = true;
     }
 
-    // 7. Dynamic Time of Day / Color Temperature Grading
-    if (this.scrollProgress < 0.20) {
-      // Dhanteras: Warm afternoon
+    // Dynamic Time of Day / Color Temperature Grading (Continuous gradient)
+    if (this.scrollProgress < 0.25) {
+      // Dhanteras: Warm afternoon interior
       this.scene.background.setHex(0x2A111B);
       this.scene.fog.color.setHex(0x2A111B);
       this.dirSunLight.color.setHex(0xFFC785);
       this.dirSunLight.intensity = 1.5;
-    } else if (this.scrollProgress < 0.40) {
-      // Kali Chaudas: Crisp morning sun entering
+    } else if (this.scrollProgress < 0.45) {
+      // Kali Chaudas: Crisp morning sun entering through window
       this.scene.background.setHex(0x1F1218);
       this.scene.fog.color.setHex(0x1F1218);
       this.dirSunLight.color.setHex(0xFFF2D6);
       this.dirSunLight.intensity = 2.2;
-    } else if (this.scrollProgress < 0.60) {
+    } else if (this.scrollProgress < 0.68) {
       // Diwali: Rich celebratory evening & festive burgundy glow
       this.scene.background.setHex(0x350F1D);
       this.scene.fog.color.setHex(0x350F1D);
       this.dirSunLight.color.setHex(0xFF9933);
       this.dirSunLight.intensity = 1.2;
-    } else if (this.scrollProgress < 0.80) {
-      // Bestu Varas: Radiant New Year morning outdoor light
-      this.scene.background.setHex(0x2D1720);
-      this.scene.fog.color.setHex(0x2D1720);
-      this.dirSunLight.color.setHex(0xFFFAF0);
-      this.dirSunLight.intensity = 2.4;
+    } else if (this.scrollProgress < 0.85) {
+      // Bestu Varas: Radiant New Year dawn courtyard & fireworks
+      this.scene.background.setHex(0x24111D);
+      this.scene.fog.color.setHex(0x24111D);
+      this.dirSunLight.color.setHex(0xFFE8CC);
+      this.dirSunLight.intensity = 2.0;
     } else {
       // Bhai Bij: Serene twilight & warm golden hour
       this.scene.background.setHex(0x240D17);
       this.scene.fog.color.setHex(0x240D17);
       this.dirSunLight.color.setHex(0xE59866);
       this.dirSunLight.intensity = 1.4;
+    }
+
+    // Dynamic Puja Mandir Light & Incense Animation
+    if (this.pujaAltar) {
+      // Glow brighter when user reaches Diwali (0.50 - 0.70)
+      const pujaProximity = 1.0 - Math.min(1.0, Math.abs(this.scrollProgress - 0.58) / 0.16);
+      if (this.pujaAltar.children) {
+        const pl = this.pujaAltar.children.find(c => c.isPointLight);
+        if (pl) pl.intensity = 1.8 + pujaProximity * 1.5;
+      }
     }
 
     // 8. Laxmi Puja Incense Smoke Animation
